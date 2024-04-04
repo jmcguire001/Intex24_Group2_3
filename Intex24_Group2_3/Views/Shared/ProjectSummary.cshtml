@@ -1,0 +1,25 @@
+﻿@using Intex24_Group2_3.Infrastructure
+
+@*
+    For more information on enabling MVC for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
+*@
+@{
+}
+
+@model Project 
+
+<div class="card m-1 p-1">
+    <h3>@Model.ProjectName<span class="badge rounded-pill bg-primary text-white float-end"><small>@Model.ProjectImpact</small></span></h3>
+
+    <ul>
+        <li>Project Type: @Model.ProjectType</li>
+        <li>Project Phase: @Model.ProjectPhase</li>
+        <li>Installation Date: @Model.ProjectInstallation</li>
+    </ul>
+
+    <form id=@Model.ProjectId method="post" asp-page="/Cart"> <!-- Will take us straight to the razor page! But it does so using this route -->
+        <input type="hidden" asp-for="@Model.ProjectId" />
+        <input type="hidden" name="returnUrl" value="@ViewContext.HttpContext.Request.PathAndQuery()" />
+        <button type="submit" class="btn-outline-success btn-sm float-end">Donate</button>
+    </form>
+</div>

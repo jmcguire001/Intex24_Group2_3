@@ -1,0 +1,26 @@
+﻿@{
+    ViewData["Title"] = "Home";
+}
+
+<h1>@ViewData["Title"]</h1>
+
+<p>Welcome to the CartWheel, your home for new shopping ideas!</p>
+
+@* @{
+    ViewData["Title"] = "Projects";
+}
+
+<!-- We can pass one model that has lots of stuff in it; we had to use individual model views, though! -->
+@model ProjectsListViewModel
+
+<h1>CartWheel</h1>
+
+@foreach (Project p in Model.Projects)
+{
+    <partial name="ProjectSummary" model="p" />
+}
+
+<div page-model="@Model.PaginationInfo" page-action="Index" page-class-enabled="true"
+     page-class-normal="btn-outline-dark" page-class-selected="btn-primary" page-class="btn"
+     page-url-projectType="@Model.CurrentProjectType" class="btn-group pull-right m-1">
+</div> *@

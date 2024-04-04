@@ -1,0 +1,17 @@
+﻿@{
+    bool isAuthenticated = User.Identity.IsAuthenticated;
+}
+
+@if (isAuthenticated)
+{
+    <div class="d-grid gap-2">
+        <a class="btn btn-outline-secondary" asp-controller="Home" asp-action="Shop" asp-route-projectType="" asp-route-pageNum="">Home</a>
+
+        <!-- This is a FOR loop that gets every item based on project type -->
+        @foreach (string projType in Model ?? Enumerable.Empty<string>())
+        {
+            <!-- Create a button for each specific project type -->
+            <a class="btn @(projType == ViewBag.SelectedProjectType ? "btn-primary" : "btn-outline-secondary")" asp-controller="Home" asp-action="Shop" asp-route-projectType="@projType" asp-route-pageNum="1">@projType</a>
+        }
+    </div>
+}
