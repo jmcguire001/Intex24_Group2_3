@@ -21,9 +21,9 @@ services.AddAuthentication().AddMicrosoftAccount(microsoftOptions =>
 builder.Services.Configure<EmailSettings>(builder.Configuration.GetSection("EmailSettings"));
 builder.Services.AddTransient<IEmailSender, EmailSender>();
 
-//// Add configuration services
+// Add configuration services
 //builder.Configuration.AddAzureKeyVault(
-//    new Uri("https://intex24group23keyvault.vault.azure.net/"),
+//    new Uri("https://intex.vault.azure.net/"),
 //    new DefaultAzureCredential());
 
 // Add services to the container.
@@ -75,7 +75,6 @@ app.MapDefaultControllerRoute();
 app.MapControllerRoute("pageenumandtype", "{projectType}/{pageNum}", new { Controller = "Home", action = "Shop" });
 app.MapControllerRoute("pagination", "{pageNum}", new { Controller = "Home", action = "Shop", pageNum = 1 });
 app.MapControllerRoute("projectType", "{projectType}", new { Controller = "Home", action = "Shop", pageNum = 1 });
-// app.MapControllerRoute("default", "/Identity/Account/Login", new { Controller = "Home", action = "Shop" });
 
 // Logging route information
 app.Use(async (context, next) =>
@@ -91,3 +90,5 @@ app.Use(async (context, next) =>
 app.MapRazorPages();
 
 app.Run();
+
+//az keyvault set-policy --name Intex24Group23KeyV4ault --upn electric.jay11_gmail.com#EXT#@electricjay11gmail.onmicrosoft.com --secret-permissions delete get list set purge
