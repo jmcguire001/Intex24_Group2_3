@@ -2,7 +2,6 @@ using Intex24_Group2_3.Data;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.AspNetCore.Identity.UI.Services;
-using Intex24_Group2_3.Services;
 using Intex24_Group2_3.Models;
 using Azure.Security.KeyVault.Secrets;
 using Azure.Identity;
@@ -18,7 +17,6 @@ services.AddAuthentication().AddMicrosoftAccount(microsoftOptions =>
 });
 
 // Configure strongly typed settings objects
-builder.Services.Configure<EmailSettings>(builder.Configuration.GetSection("EmailSettings"));
 builder.Services.AddTransient<IEmailSender, EmailSender>();
 
 // Add configuration services
@@ -76,19 +74,6 @@ app.MapControllerRoute("pageenumandtype", "{projectType}/{pageNum}", new { Contr
 app.MapControllerRoute("pagination", "{pageNum}", new { Controller = "Home", action = "Shop", pageNum = 1 });
 app.MapControllerRoute("projectType", "{projectType}", new { Controller = "Home", action = "Shop", pageNum = 1 });
 
-// Logging route information
-app.Use(async (context, next) =>
-{
-    var routeData = context.GetRouteData();
-    var action = routeData?.Values["action"];
-    var controller = routeData?.Values["controller"];
-    var path = context.Request.Path;
-    Console.WriteLine($"Route: {controller}/{action} - Path: {path}");
-    await next();
-});
-
 app.MapRazorPages();
 
 app.Run();
-
-//az keyvault set-policy --name Intex24Group23KeyV4ault --upn electric.jay11_gmail.com#EXT#@electricjay11gmail.onmicrosoft.com --secret-permissions delete get list set purge
