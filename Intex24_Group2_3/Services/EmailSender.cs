@@ -1,52 +1,42 @@
-﻿using Azure.Identity;
-using Azure.Security.KeyVault.Secrets;
-using Intex24_Group2_3.Models;
-using Microsoft.Extensions.Options;
-using Newtonsoft.Json;
+﻿using System.Net;
 using System.Net.Mail;
-using System.Net;
+using System.Threading.Tasks;
 using Microsoft.AspNetCore.Identity.UI.Services;
+using Microsoft.Extensions.Options;
+using Intex24_Group2_3.Models;
 
-public class EmailSender : IEmailSender
+namespace Intex24_Group2_3.Services
 {
-    public class EmailSettings
+    public class EmailSender : IEmailSender
     {
-        public string MailServer { get; set; }
-        public int MailPort { get; set; }
-        public string SenderName { get; set; }
-        public string FromEmail { get; set; }
-        public string Password { get; set; }
-    }
+        private readonly EmailSettings _emailSettings;
 
-    public async Task SendEmailAsync(string email, string subject, string htmlMessage)
-    {
-        // Fetch email settings from Azure Key Vault
-        var secretClient = new SecretClient(new Uri("https://intex.vault.azure.net/"), new DefaultAzureCredential());
-
-        // Replace "EmailSettings" with the name of your secret containing email settings
-        KeyVaultSecret mailServerSecret = await secretClient.GetSecretAsync("EmailSettings");
-
-        // Deserialize secret value to EmailSettings object
-        var emailSettings = JsonConvert.DeserializeObject<EmailSettings>(mailServerSecret.Value);
-
-        // Configure and send the email using SMTP
-        var client = new SmtpClient(emailSettings.MailServer)
+        public EmailSender(IOptions<EmailSettings> emailSettings)
         {
-            UseDefaultCredentials = false,
-            Credentials = new NetworkCredential(emailSettings.FromEmail, emailSettings.Password),
-            EnableSsl = true,
-            Port = emailSettings.MailPort
-        };
+            _emailSettings = emailSettings.Value;
+        }
 
-        var mailMessage = new MailMessage
+        public Task SendEmailAsync(string email, string subject, string htmlMessage)
         {
-            From = new MailAddress(emailSettings.FromEmail, emailSettings.SenderName),
-            Subject = subject,
-            Body = htmlMessage,
-            IsBodyHtml = true
-        };
-        mailMessage.To.Add(email);
+            // Configure and send the email using SMTP
+            var client = new SmtpClient(_emailSettings.MailServer)
+            {
+                UseDefaultCredentials = false,
+                Credentials = new NetworkCredential(_emailSettings.FromEmail, _emailSettings.Password),
+                EnableSsl = true,
+                Port = _emailSettings.MailPort
+            };
 
-        await client.SendMailAsync(mailMessage);
+            var mailMessage = new MailMessage
+            {
+                From = new MailAddress(_emailSettings.FromEmail, _emailSettings.SenderName),
+                Subject = subject,
+                Body = htmlMessage,
+                IsBodyHtml = true
+            };
+            mailMessage.To.Add(email);
+
+            return client.SendMailAsync(mailMessage);
+        }
     }
 }
