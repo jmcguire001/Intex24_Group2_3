@@ -18,20 +18,26 @@ services.AddAuthentication().AddMicrosoftAccount(microsoftOptions =>
 // Configure strongly typed settings objects
 builder.Services.AddTransient<IEmailSender, EmailSender>();
 
-// Add configuration services
-builder.Configuration.AddAzureKeyVault(
-    new Uri("https://intex.vault.azure.net/"),
-    new DefaultAzureCredential());
+//// Add configuration services. Uncomment when ready
+//builder.Configuration.AddAzureKeyVault(
+//    new Uri("https://intex.vault.azure.net/"),
+//    new DefaultAzureCredential());
 
 // Add services to the container.
 var connectionString = builder.Configuration.GetConnectionString("IntexConnection") ?? throw new InvalidOperationException("Connection string 'IntexConnection' not found.");
 
-builder.Services.AddDbContext<ApplicationDbContext>(options =>
-    options.UseSqlServer(connectionString));
-builder.Services.AddDbContext<ShoppingContext>(options =>
-    options.UseSqlServer(connectionString));
-builder.Services.AddDatabaseDeveloperPageExceptionFilter();
+// Comment this out for testing
+//builder.Services.AddDbContext<ApplicationDbContext>(options =>
+//    options.UseSqlServer(connectionString));
+//builder.Services.AddDbContext<ShoppingContext>(options =>
+//    options.UseSqlServer(connectionString));
+//builder.Services.AddDatabaseDeveloperPageExceptionFilter();
 
+builder.Services.AddDbContext<ApplicationDbContext>(options =>
+    options.UseSqlite(connectionString));
+builder.Services.AddDbContext<ShoppingContext>(options =>
+    options.UseSqlite(connectionString));
+builder.Services.AddDatabaseDeveloperPageExceptionFilter();
 
 // When we refer to IWaterRepository, we actually want to use the EFWaterRepository
 builder.Services.AddScoped<IShoppingRepository, EFShoppingRepository>();
