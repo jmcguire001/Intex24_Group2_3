@@ -25,6 +25,7 @@ namespace Intex24_Group2_3.Controllers
         public IActionResult Shop(int pageNum, string? projectType) // 'page' means something in dotnet
         {
             int pageSize = 1; // How many items to show per page
+            pageNum = pageNum <= 0 ? 1 : pageNum; // If pageNum is 0, set it to 1
 
             // This variable will hold everything from ProjectsListViewModel, and then be passed to Index.cshtml
             var listData = new ProjectsListViewModel

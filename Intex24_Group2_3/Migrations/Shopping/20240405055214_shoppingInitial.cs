@@ -6,7 +6,7 @@ using Microsoft.EntityFrameworkCore.Migrations;
 namespace Intex24_Group2_3.Migrations.Shopping
 {
     /// <inheritdoc />
-    public partial class Initial : Migration
+    public partial class shoppingInitial : Migration
     {
         /// <inheritdoc />
         protected override void Up(MigrationBuilder migrationBuilder)
@@ -15,14 +15,14 @@ namespace Intex24_Group2_3.Migrations.Shopping
                 name: "Projects",
                 columns: table => new
                 {
-                    ProjectId = table.Column<int>(type: "INTEGER", nullable: false)
-                        .Annotation("Sqlite:Autoincrement", true),
-                    ProjectName = table.Column<string>(type: "TEXT", nullable: false),
-                    ProgramName = table.Column<string>(type: "TEXT", nullable: false),
-                    ProjectType = table.Column<string>(type: "TEXT", nullable: true),
-                    ProjectImpact = table.Column<int>(type: "INTEGER", nullable: false),
-                    ProjectInstallation = table.Column<DateTime>(type: "TEXT", nullable: false),
-                    ProjectPhase = table.Column<string>(type: "TEXT", nullable: false)
+                    ProjectId = table.Column<int>(type: "int", nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
+                    ProjectName = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    ProgramName = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    ProjectType = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    ProjectImpact = table.Column<int>(type: "int", nullable: false),
+                    ProjectInstallation = table.Column<DateTime>(type: "datetime2", nullable: false),
+                    ProjectPhase = table.Column<string>(type: "nvarchar(max)", nullable: false)
                 },
                 constraints: table =>
                 {
