@@ -18,10 +18,10 @@ services.AddAuthentication().AddMicrosoftAccount(microsoftOptions =>
 // Configure strongly typed settings objects
 builder.Services.AddTransient<IEmailSender, EmailSender>();
 
-// Add configuration services
-builder.Configuration.AddAzureKeyVault(
-    new Uri("https://intex.vault.azure.net/"),
-    new DefaultAzureCredential());
+//// Add configuration services. DELETE THIS LINE IF YOU ARE USING AZURE KEY VAULT
+//builder.Configuration.AddAzureKeyVault(
+//    new Uri("https://intex.vault.azure.net/"),
+//    new DefaultAzureCredential());
 
 // Add services to the container.
 var connectionString = builder.Configuration.GetConnectionString("IntexConnection") ?? throw new InvalidOperationException("Connection string 'IntexConnection' not found.");
